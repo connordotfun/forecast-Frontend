@@ -1,9 +1,16 @@
 import * as React from 'react'
-import './index.css'
 
 const InfoCard: React.SFC<{}> = (props) => {
+    const infoCardStyle: React.CSSProperties = {
+        position: 'fixed',
+        width: '300px',
+        height: '150px',
+        top: '10px',
+        right: '10px',
+        backgroundColor: 'white'
+    }
     return (
-        <div className="info-card"/>
+        <div className="info-card" style={infoCardStyle}/>
     )
 }
 

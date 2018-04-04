@@ -1,6 +1,5 @@
 import * as React from 'react'
 import GoogleMapReact, { Coords } from 'google-map-react'
-import './index.css'
 
 const CleanerMidnight = require('./CleanerMidnight.json')
 
