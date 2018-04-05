@@ -35,7 +35,12 @@ class App extends React.Component {
     );
   }
 
-  private _drawBox(google: {map:   any, maps: any }) {
+  private _switchRegion(newRegion: string) {
+    this._thisRegion = newRegion
+  }
+
+  private _drawBox = ((google: {map:   any, maps: any }) => {
+    const self = this
     locations.forEach((location: any) => {
       const coords: Coords[] = [
         { lat: location.north, lng: location.east },
@@ -58,10 +63,11 @@ class App extends React.Component {
         })
 
       google.maps.event.addListener(boundingBox, 'click', (event: google.maps.PolyMouseEvent) => {
-        console.log(boundingBox.boxID) //tslint:disable-line
+        self._switchRegion(boundingBox.boxID)
       })
     })
-  }
+  }).bind(this)
+
 }
 
 export default App;
