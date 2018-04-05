@@ -1,12 +1,22 @@
 import * as React from 'react';
 import GoogleMap from '../../components/GoogleMap'
 import InfoCard from '../../components/InfoCard'
-import './index.css';
 import { Coords } from 'google-map-react';
+import Message from '../../models/Message';
+
+import './index.css';
 
 const locations = require('./locations.json')
+const regionMap = locations.reduce(
+                    (map: any, obj: any) => {
+                      map[obj.ID] = obj.name;
+                      return map;
+                    },
+                    {});
 
 class App extends React.Component {
+  private _latestMessages: {[key: string]: Message}
+  private _thisRegion: string = 'BLD0'
   render() {
     return (
       <div className="App">
@@ -18,12 +28,14 @@ class App extends React.Component {
           }}
           apiHandler={this._drawBox}
         />
-        <InfoCard />
+        {this._latestMessages && this._thisRegion in this._latestMessages ?
+          <InfoCard data={this._latestMessages[this._thisRegion]} city={regionMap[this._thisRegion]}/> : null 
+        } 
       </div>
     );
   }
 
-  private _drawBox(google: { map: any, maps: any }) {
+  private _drawBox(google: {map:   any, maps: any }) {
     locations.forEach((location: any) => {
       const coords: Coords[] = [
         { lat: location.north, lng: location.east },
