@@ -7,7 +7,7 @@ interface Message {
     tid: number,
     weather: Weather
     centerLat: number,
-    centerLong: number
+    centerLon: number
 }
 
 export default Message
