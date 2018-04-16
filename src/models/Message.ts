@@ -1,9 +1,13 @@
+import Weather from './Weather';
+
 interface Message {
-    temp: number
-    weather: string
-    sentiment: number
-    exemplar: string
-    regionid: string
+    name: string,
+    ID: string,
+    sentiment: number,
+    tid: number,
+    weather: Weather
+    centerLat: number,
+    centerLong: number
 }
 
 export default Message
