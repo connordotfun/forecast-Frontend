@@ -3,20 +3,20 @@ import GoogleMap from '../../components/GoogleMap'
 import InfoCard from '../../components/InfoCard'
 import { Coords } from 'google-map-react';
 import Message from '../../models/Message';
+import { observable } from 'mobx'
+import { observer } from 'mobx-react'
 
 import './index.css';
 
 const locations = require('./locations.json')
-const regionMap = locations.reduce(
-                    (map: any, obj: any) => {
-                      map[obj.ID] = obj.name;
-                      return map;
-                    },
-                    {});
 
+@observer
 class App extends React.Component {
-  private _latestMessages: {[key: string]: Message}
-  private _thisRegion: string = 'BLD0'
+  @observable private _latestMessages: Message[]
+  @observable private _thisRegion: string = 'BLD0'
+  @observable private _regionObject: Message | undefined = this._latestMessages.find(
+    message => message.ID === this._thisRegion
+  )
   render() {
     return (
       <div className="App">
@@ -28,8 +28,8 @@ class App extends React.Component {
           }}
           apiHandler={this._drawBox}
         />
-        {this._latestMessages && this._thisRegion in this._latestMessages ?
-          <InfoCard data={this._latestMessages[this._thisRegion]} city={regionMap[this._thisRegion]}/> : null 
+        {this._regionObject ?
+          <InfoCard data={this._regionObject}/> : null 
         } 
       </div>
     );
@@ -37,6 +37,7 @@ class App extends React.Component {
 
   private _switchRegion(newRegion: string) {
     this._thisRegion = newRegion
+    this._regionObject = this._latestMessages.find(message => message.ID === newRegion) 
   }
 
   private _drawBox = ((google: {map:   any, maps: any }) => {

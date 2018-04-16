@@ -1,10 +1,9 @@
 import * as React from 'react'
 import Message from '../../models/Message';
-import { TwitterTweetEmbed } from 'react-twitter-embed';
+import { Tweet } from 'react-twitter-widgets';
 
 interface InfoCardProps {
     data: Message
-    city: string
 }
 
 const InfoCard: React.SFC<InfoCardProps> = (props) => {
@@ -18,12 +17,12 @@ const InfoCard: React.SFC<InfoCardProps> = (props) => {
     }
     return (
         <div className="info-card" style={infoCardStyle}>
-            <h3>{props.city}</h3>
+            <h3>{props.data.name}</h3>
             <ul>
-                <li>Weather: {props.data.temp}° F and {props.data.weather}</li>
+                <li>Weather: {props.data.weather.temp}° F with {props.data.weather.description}</li>
                 <li>Sentiment: {props.data.sentiment}</li>
             </ul>
-            <TwitterTweetEmbed tweetId={props.data.exemplar} />
+            <Tweet tweetId={props.data.tid} />
         </div>
     )
 }

@@ -4,10 +4,10 @@ interface Message {
     name: string,
     ID: string,
     sentiment: number,
-    tid: number,
+    tid: string,
     weather: Weather
     centerLat: number,
-    centerLong: number
+    centerLon: number
 }
 
 export default Message
