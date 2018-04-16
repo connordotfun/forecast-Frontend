@@ -3,7 +3,6 @@ import GoogleMap from '../../components/GoogleMap'
 import InfoCard from '../../components/InfoCard'
 import { Coords } from 'google-map-react';
 import Message from '../../models/Message';
-import examples from './examples'
 import { observable } from 'mobx'
 import { observer } from 'mobx-react'
 
@@ -13,7 +12,7 @@ const locations = require('./locations.json')
 
 @observer
 class App extends React.Component {
-  @observable private _latestMessages: Message[] = examples
+  @observable private _latestMessages: Message[]
   @observable private _thisRegion: string = 'BLD0'
   @observable private _regionObject: Message | undefined = this._latestMessages.find(
     message => message.ID === this._thisRegion
