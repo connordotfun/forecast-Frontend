@@ -3,21 +3,41 @@ import GoogleMap from '../../components/GoogleMap'
 import InfoCard from '../../components/InfoCard'
 import { Coords } from 'google-map-react';
 import Message from '../../models/Message';
-import { observable } from 'mobx'
-import { observer } from 'mobx-react'
+import { observable, action } from 'mobx'
+import { observer, inject } from 'mobx-react'
+
+import { SocketStore } from '../../stores/socketStore'
+import { MessageStore } from '../../stores/messageStore'
 
 import './index.css';
 
 const locations = require('./locations.json')
 
+interface StoreProps {
+  socketStore?: SocketStore,
+  messageStore?: MessageStore
+} 
+
+@inject('socketStore', 'messageStore')
 @observer
-class App extends React.Component {
-  @observable private _latestMessages: Message[]
+class App extends React.Component<StoreProps> {
+  
+  // @action
+  // componentWillMount() {
+  //     this.props.socketStore.joinRoom(this.props.match.params.room)
+  // }
+
+  // @action
+  // componentWillUnmount() {
+  //     this.props.socketStore.resetListeners()
+  //     this.props.socketStore.leaveRoom()
+  // }
+
   @observable private _thisRegion: string = 'BLD0'
-  @observable private _regionObject: Message | undefined = this._latestMessages.find(
-    message => message.ID === this._thisRegion
-  )
   render() {
+    const _regionObject: Message | null = this.props.messageStore ?
+                                          this.props.messageStore.getMessage(this._thisRegion) :
+                                          null
     return (
       <div className="App">
         <GoogleMap 
@@ -28,16 +48,16 @@ class App extends React.Component {
           }}
           apiHandler={this._drawBox}
         />
-        {this._regionObject ?
-          <InfoCard data={this._regionObject}/> : null 
+        {_regionObject ?
+          <InfoCard data={_regionObject}/> : null 
         } 
       </div>
     );
   }
 
+  @action
   private _switchRegion(newRegion: string) {
     this._thisRegion = newRegion
-    this._regionObject = this._latestMessages.find(message => message.ID === newRegion) 
   }
 
   private _drawBox = ((google: {map:   any, maps: any }) => {
