@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx'
 import messageStore from './messageStore'
 
-class SocketStore {
+export class SocketStore {
   @observable socket: WebSocket | null
   @observable connected: boolean = false
   @observable error: Event

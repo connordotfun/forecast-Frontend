@@ -1,8 +1,8 @@
 import { observable, action } from 'mobx'
 import Message from '../models/Message';
 
-class MessageStore {
-    @observable $latestMessages: {[key: string]: Message}
+export class MessageStore {
+    @observable $latestMessages: {[key: string]: Message} = {}
 
     @action
     public addMessage(message: Message): void {
