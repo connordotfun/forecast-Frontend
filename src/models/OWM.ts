@@ -1,4 +1,5 @@
 // OpenWeatherMap 2.5 response
+// https://github.com/Widget-Wrangler/ww/blob/master/TypeScript.Weather/typings/openweathermap/openweathermap.d.ts
 export interface Coord {
     lon: number;
     lat: number;
