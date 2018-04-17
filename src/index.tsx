@@ -4,7 +4,7 @@ import registerServiceWorker from './registerServiceWorker';
 import { Provider } from 'mobx-react'
 
 import messageStore from './stores/messageStore'
-import socketStore from './stores/socketStore'
+import sseStore from './stores/sseStore'
 
 import App from './views/App';
 
@@ -12,7 +12,7 @@ import './index.css';
 
 const stores = {
   messageStore,
-  socketStore
+  sseStore
 }
 
 ReactDOM.render(

@@ -6,7 +6,7 @@ import Message from '../../models/Message';
 import { observable, action } from 'mobx'
 import { observer, inject } from 'mobx-react'
 
-import { SocketStore } from '../../stores/socketStore'
+import { SSEStore } from '../../stores/sseStore'
 import { MessageStore } from '../../stores/messageStore'
 
 import './index.css';
@@ -14,11 +14,11 @@ import './index.css';
 const locations = require('./locations.json')
 
 interface StoreProps {
-  socketStore?: SocketStore,
+  sseStore?: SSEStore,
   messageStore?: MessageStore
 } 
 
-@inject('socketStore', 'messageStore')
+@inject('sseStore', 'messageStore')
 @observer
 class App extends React.Component<StoreProps> {
   
