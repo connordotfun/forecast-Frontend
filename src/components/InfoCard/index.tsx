@@ -17,9 +17,9 @@ const InfoCard: React.SFC<InfoCardProps> = (props) => {
     }
     return (
         <div className="info-card" style={infoCardStyle}>
-            <h3>{props.data.name}</h3>
+            <h3>{props.data.region.name}</h3>
             <ul>
-                <li>Weather: {props.data.weather.temp}° F with {props.data.weather.description}</li>
+                <li>Weather: {props.data.weather.main.temp}° F with {props.data.weather.weather[0].description}</li>
                 <li>Sentiment: {props.data.sentiment}</li>
             </ul>
             <Tweet tweetId={props.data.tid} />
