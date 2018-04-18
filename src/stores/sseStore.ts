@@ -12,7 +12,7 @@ export class SSEStore {
       return
     }
 
-    this.evtSource = new EventSource(url, {withCredentials: true})
+    this.evtSource = new EventSource(url, {withCredentials: false})
     this.evtSource.onopen = action((e) => { this.connected = true })
     this.evtSource.onerror = this.setError
     this.evtSource.onmessage = this.onMessage
