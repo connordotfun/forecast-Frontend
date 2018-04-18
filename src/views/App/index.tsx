@@ -14,8 +14,8 @@ import './index.css';
 const locations = require('./locations.json')
 
 interface StoreProps {
-  sseStore: SSEStore,
-  messageStore: MessageStore
+  sseStore?: SSEStore,
+  messageStore?: MessageStore
 } 
 
 @inject('sseStore', 'messageStore')
