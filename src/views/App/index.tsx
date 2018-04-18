@@ -14,26 +14,29 @@ import './index.css';
 const locations = require('./locations.json')
 
 interface StoreProps {
-  sseStore?: SSEStore,
-  messageStore?: MessageStore
+  sseStore: SSEStore,
+  messageStore: MessageStore
 } 
 
 @inject('sseStore', 'messageStore')
 @observer
 class App extends React.Component<StoreProps> {
   
-  // @action
-  // componentWillMount() {
-  //     this.props.socketStore.joinRoom(this.props.match.params.room)
-  // }
+  @action
+  componentWillMount() {
+    if (this.props.sseStore) {
+      this.props.sseStore.initializeConnection('URL_HERE')
+    }
+  }
 
-  // @action
-  // componentWillUnmount() {
-  //     this.props.socketStore.resetListeners()
-  //     this.props.socketStore.leaveRoom()
-  // }
+  @action
+  componentWillUnmount() {
+    if (this.props.sseStore) {
+      this.props.sseStore.closeConnection()
+    }
+  }
 
-  @observable private _thisRegion: string = 'BLD0'
+  @observable private _thisRegion: string = ''
   render() {
     const _regionObject: Message | null = this.props.messageStore ?
                                           this.props.messageStore.getMessage(this._thisRegion) :
@@ -60,7 +63,7 @@ class App extends React.Component<StoreProps> {
     this._thisRegion = newRegion
   }
 
-  private _drawBox = ((google: {map:   any, maps: any }) => {
+  private _drawBox = ((google: {map: any, maps: any }) => {
     const self = this
     locations.forEach((location: any) => {
       const coords: Coords[] = [
