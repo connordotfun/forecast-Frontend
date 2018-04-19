@@ -1,10 +1,12 @@
 import * as React from 'react';
-import GoogleMap from '../../components/GoogleMap'
-import InfoCard from '../../components/InfoCard'
 import { Coords } from 'google-map-react';
 import Message from '../../models/Message';
 import { observable, action } from 'mobx'
 import { observer, inject } from 'mobx-react'
+
+import GoogleMap from '../../components/GoogleMap'
+import InfoCard from '../../components/InfoCard'
+import Sidebar from '../../components/Sidebar'
 
 import { SSEStore } from '../../stores/sseStore'
 import { MessageStore } from '../../stores/messageStore'
@@ -51,6 +53,7 @@ class App extends React.Component<StoreProps> {
           }}
           apiHandler={this._drawBox}
         />
+        <Sidebar />
         {_regionObject ?
           <InfoCard data={_regionObject}/> : null 
         } 

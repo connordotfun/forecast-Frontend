@@ -1,0 +1,8 @@
+.sidebar {
+    grid-area: sidebar;
+    background-color: #021019;
+}
+
+.sidebar .branding {
+    max-width: 100%;
+}
