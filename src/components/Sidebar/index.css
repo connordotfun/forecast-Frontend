@@ -1,8 +1,12 @@
 .sidebar {
+    box-sizing: border-box;
     grid-area: sidebar;
     background-color: #021019;
+    border-right: 2px dashed #158099;
 }
 
 .sidebar .branding {
+    box-sizing: border-box;
     max-width: 100%;
+    padding: 5px;
 }
