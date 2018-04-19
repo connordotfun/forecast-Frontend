@@ -25,8 +25,8 @@ class App extends React.Component<StoreProps> {
   @action
   componentWillMount() {
     if (this.props.networkStore) {
-      this.props.networkStore.fetchCurrentData()
       this.props.networkStore.initializeConnection('URL_HERE')
+      this.props.networkStore.fetchCurrentData()
     }
   }
 

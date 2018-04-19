@@ -9,15 +9,15 @@ export class NetworkStore {
   @observable connected: boolean = false
   @observable error: Event
   @observable listeners = []
-  private url: string
+  private serverUrl: string
 
   @action public initializeConnection(url: string) {
-    this.url = url
+    this.serverUrl = url
     if (this.connected) {
       return
     }
 
-    this.evtSource = new EventSource(this.url, {withCredentials: false})
+    this.evtSource = new EventSource(this.serverUrl, {withCredentials: false})
     this.evtSource.onopen = action((e) => { this.connected = true })
     this.evtSource.onerror = this.setError
     this.evtSource.onmessage = this.onMessage
@@ -37,7 +37,7 @@ export class NetworkStore {
   }
 
   public fetchCurrentData() {
-    return fetch(this.url + '/current')
+    return fetch(this.serverUrl + '/current')
     .then(response => response.text())
     .then(text => {
       let messages: Message[] = JSON.parse(JSON.parse(text))
