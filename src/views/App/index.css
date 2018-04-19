@@ -1,5 +1,9 @@
 .App {
   text-align: center;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-areas: "sidebar map";
+  height: 100vh;
 }
 
 .App-logo {
