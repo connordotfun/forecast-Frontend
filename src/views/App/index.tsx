@@ -3,21 +3,44 @@ import GoogleMap from '../../components/GoogleMap'
 import InfoCard from '../../components/InfoCard'
 import { Coords } from 'google-map-react';
 import Message from '../../models/Message';
-import { observable } from 'mobx'
-import { observer } from 'mobx-react'
+import { observable, action } from 'mobx'
+import { observer, inject } from 'mobx-react'
+
+import { SSEStore } from '../../stores/sseStore'
+import { MessageStore } from '../../stores/messageStore'
 
 import './index.css';
 
 const locations = require('./locations.json')
 
+interface StoreProps {
+  sseStore?: SSEStore,
+  messageStore?: MessageStore
+} 
+
+@inject('sseStore', 'messageStore')
 @observer
-class App extends React.Component {
-  @observable private _latestMessages: Message[]
-  @observable private _thisRegion: string = 'BLD0'
-  @observable private _regionObject: Message | undefined = this._latestMessages.find(
-    message => message.ID === this._thisRegion
-  )
+class App extends React.Component<StoreProps> {
+  
+  @action
+  componentWillMount() {
+    if (this.props.sseStore) {
+      this.props.sseStore.initializeConnection('URL_HERE')
+    }
+  }
+
+  @action
+  componentWillUnmount() {
+    if (this.props.sseStore) {
+      this.props.sseStore.closeConnection()
+    }
+  }
+
+  @observable private _thisRegion: string = ''
   render() {
+    const _regionObject: Message | null = this.props.messageStore ?
+                                          this.props.messageStore.getMessage(this._thisRegion) :
+                                          null
     return (
       <div className="App">
         <GoogleMap 
@@ -28,19 +51,19 @@ class App extends React.Component {
           }}
           apiHandler={this._drawBox}
         />
-        {this._regionObject ?
-          <InfoCard data={this._regionObject}/> : null 
+        {_regionObject ?
+          <InfoCard data={_regionObject}/> : null 
         } 
       </div>
     );
   }
 
+  @action
   private _switchRegion(newRegion: string) {
     this._thisRegion = newRegion
-    this._regionObject = this._latestMessages.find(message => message.ID === newRegion) 
   }
 
-  private _drawBox = ((google: {map:   any, maps: any }) => {
+  private _drawBox = ((google: {map: any, maps: any }) => {
     const self = this
     locations.forEach((location: any) => {
       const coords: Coords[] = [
