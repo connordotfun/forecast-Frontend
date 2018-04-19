@@ -6,7 +6,7 @@ import Message from '../../models/Message';
 import { observable, action } from 'mobx'
 import { observer, inject } from 'mobx-react'
 
-import { SSEStore } from '../../stores/sseStore'
+import { NetworkStore } from '../../stores/networkStore'
 import { MessageStore } from '../../stores/messageStore'
 
 import './index.css';
@@ -14,25 +14,25 @@ import './index.css';
 const locations = require('./locations.json')
 
 interface StoreProps {
-  sseStore?: SSEStore,
+  networkStore?: NetworkStore,
   messageStore?: MessageStore
 } 
 
-@inject('sseStore', 'messageStore')
+@inject('networkStore', 'messageStore')
 @observer
 class App extends React.Component<StoreProps> {
   
   @action
   componentWillMount() {
-    if (this.props.sseStore) {
-      this.props.sseStore.initializeConnection('URL_HERE')
+    if (this.props.networkStore) {
+      this.props.networkStore.initializeConnection('URL_HERE')
     }
   }
 
   @action
   componentWillUnmount() {
-    if (this.props.sseStore) {
-      this.props.sseStore.closeConnection()
+    if (this.props.networkStore) {
+      this.props.networkStore.closeConnection()
     }
   }
 

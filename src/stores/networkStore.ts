@@ -1,18 +1,23 @@
 import { observable, action } from 'mobx'
 import messageStore from './messageStore'
+import Message from '../models/Message';
 
-export class SSEStore {
+/* This is using SSE + fetch */
+
+export class NetworkStore {
   @observable evtSource: EventSource | null
   @observable connected: boolean = false
   @observable error: Event
   @observable listeners = []
+  private url: string
 
   @action public initializeConnection(url: string) {
+    this.url = url
     if (this.connected) {
       return
     }
 
-    this.evtSource = new EventSource(url, {withCredentials: false})
+    this.evtSource = new EventSource(this.url, {withCredentials: false})
     this.evtSource.onopen = action((e) => { this.connected = true })
     this.evtSource.onerror = this.setError
     this.evtSource.onmessage = this.onMessage
@@ -31,9 +36,18 @@ export class SSEStore {
     messageStore.addMessageByString(evt.data)
   }
 
+  public fetchCurrentData() {
+    return fetch(this.url + '/current')
+    .then(response => response.text())
+    .then(text => {
+      let messages: Message[] = JSON.parse(JSON.parse(text))
+      messages.forEach(message => messageStore.addMessage(message))
+    })
+  }
+
   @action private setError(e: Event) {
     this.error = e
   }
 }
 
-export default new SSEStore()
+export default new NetworkStore()
