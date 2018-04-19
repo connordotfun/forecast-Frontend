@@ -12,7 +12,7 @@ interface MapProps {
 
 const GoogleMap: React.SFC<MapProps> = (props) => {
     return (
-        <div className="map-container" style={{ height: '100vh', width: '100%'}}>
+        <div className="map-container" style={{ height: '100%', width: '100%', gridArea: 'map'}}>
             <GoogleMapReact
                 bootstrapURLKeys={{ key: 'AIzaSyDSEL7djaF05NHigvL5_f7KYu_U26PEqRo' }}
                 options={{styles: CleanerMidnight}}
