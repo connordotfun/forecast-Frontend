@@ -5,8 +5,8 @@ const CleanerMidnight = require('./CleanerMidnight.json')
 
 interface MapProps {
     children?: JSX.Element[] | JSX.Element
-    initialZoom: number
-    initialCenter: Coords,
+    zoom: number
+    center: Coords,
     apiHandler: (google: { map: any, maps: any }) => void // tslint:disable-line
 }
 
@@ -16,8 +16,8 @@ const GoogleMap: React.SFC<MapProps> = (props) => {
             <GoogleMapReact
                 bootstrapURLKeys={{ key: 'AIzaSyDSEL7djaF05NHigvL5_f7KYu_U26PEqRo' }}
                 options={{styles: CleanerMidnight}}
-                defaultZoom={props.initialZoom}
-                defaultCenter={props.initialCenter}
+                zoom={props.zoom}
+                center={props.center}
                 yesIWantToUseGoogleMapApiInternals={true}
                 onGoogleApiLoaded={props.apiHandler}
             >

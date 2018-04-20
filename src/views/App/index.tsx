@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Coords } from 'google-map-react';
-import { action } from 'mobx'
+import { action, observable } from 'mobx'
 import { observer, inject } from 'mobx-react'
 
 import GoogleMap from '../../components/GoogleMap'
@@ -20,6 +20,8 @@ interface StoreProps {
 @inject('networkStore', 'messageStore')
 @observer
 class App extends React.Component<StoreProps> {
+
+  @observable private _$google: {map: google.maps.Map, maps: any}
   
   @action
   componentWillMount() {
@@ -40,24 +42,25 @@ class App extends React.Component<StoreProps> {
     return (
       <div className="App">
         <GoogleMap 
-          initialZoom={5}
-          initialCenter={{
+          zoom={5}
+          center={{
             lat: 40.015, 
             lng: -105.2705,
           }}
-          apiHandler={this._drawBox}
+          apiHandler={this._onMapsLoad}
         />
-        <Sidebar />
+        <Sidebar google={this._$google}/>
       </div>
     );
   }
-
   // @action
   // private _switchRegion(newRegion: string) {
   //   this._thisRegion = newRegion
   // }
 
-  private _drawBox = ((google: {map: any, maps: any }) => {
+  @action
+  private _onMapsLoad = ((loadedGoogle: {map: google.maps.Map, maps: any}) => {
+    this._$google = loadedGoogle
     // const self = this
     locations.forEach((location: any) => {
       const coords: Coords[] = [
@@ -66,9 +69,10 @@ class App extends React.Component<StoreProps> {
         { lat: location.south, lng: location.west },
         { lat: location.north, lng: location.west },
       ]
+
       // let boundingBox = 
       new google.maps.Polygon({
-          map: google.map,
+          map: loadedGoogle.map,
           paths: coords,
           strokeColor: '#FFFF',
           strokeOpacity: 0.8,
@@ -77,8 +81,7 @@ class App extends React.Component<StoreProps> {
           fillOpacity: 0.0,
           draggable: false,
           editable: false,
-          geodesic: false,
-          boxID: location.ID
+          geodesic: false
         })
 
       // google.maps.event.addListener(boundingBox, 'click', (event: google.maps.PolyMouseEvent) => {
