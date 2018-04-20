@@ -3,21 +3,45 @@ import GoogleMap from '../../components/GoogleMap'
 import InfoCard from '../../components/InfoCard'
 import { Coords } from 'google-map-react';
 import Message from '../../models/Message';
+import { observable, action } from 'mobx'
+import { observer, inject } from 'mobx-react'
+
+import { NetworkStore } from '../../stores/networkStore'
+import { MessageStore } from '../../stores/messageStore'
 
 import './index.css';
 
 const locations = require('./locations.json')
-const regionMap = locations.reduce(
-                    (map: any, obj: any) => {
-                      map[obj.ID] = obj.name;
-                      return map;
-                    },
-                    {});
 
-class App extends React.Component {
-  private _latestMessages: {[key: string]: Message}
-  private _thisRegion: string = 'BLD0'
+interface StoreProps {
+  networkStore?: NetworkStore,
+  messageStore?: MessageStore
+} 
+
+@inject('networkStore', 'messageStore')
+@observer
+class App extends React.Component<StoreProps> {
+  
+  @action
+  componentWillMount() {
+    if (this.props.networkStore) {
+      this.props.networkStore.initializeConnection('URL_HERE')
+      this.props.networkStore.fetchCurrentData()
+    }
+  }
+
+  @action
+  componentWillUnmount() {
+    if (this.props.networkStore) {
+      this.props.networkStore.closeConnection()
+    }
+  }
+
+  @observable private _thisRegion: string = ''
   render() {
+    const _regionObject: Message | null = this.props.messageStore ?
+                                          this.props.messageStore.getMessage(this._thisRegion) :
+                                          null
     return (
       <div className="App">
         <GoogleMap 
@@ -28,18 +52,19 @@ class App extends React.Component {
           }}
           apiHandler={this._drawBox}
         />
-        {this._latestMessages && this._thisRegion in this._latestMessages ?
-          <InfoCard data={this._latestMessages[this._thisRegion]} city={regionMap[this._thisRegion]}/> : null 
+        {_regionObject ?
+          <InfoCard data={_regionObject}/> : null 
         } 
       </div>
     );
   }
 
+  @action
   private _switchRegion(newRegion: string) {
     this._thisRegion = newRegion
   }
 
-  private _drawBox = ((google: {map:   any, maps: any }) => {
+  private _drawBox = ((google: {map: any, maps: any }) => {
     const self = this
     locations.forEach((location: any) => {
       const coords: Coords[] = [

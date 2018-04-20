@@ -1,9 +1,12 @@
+import { Data } from './OWM'
+import Region from './Region'
+
 interface Message {
-    temp: number
-    weather: string
-    sentiment: number
-    exemplar: string
-    regionid: string
+    ID: string,
+    region: Region,
+    sentiment: number,
+    tid: string,
+    weather: Data
 }
 
 export default Message
