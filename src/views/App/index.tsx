@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { Coords } from 'google-map-react';
-import Message from '../../models/Message';
-import { observable, action } from 'mobx'
+import { action } from 'mobx'
 import { observer, inject } from 'mobx-react'
 
 import GoogleMap from '../../components/GoogleMap'
-import InfoCard from '../../components/InfoCard'
 import Sidebar from '../../components/Sidebar'
 import { NetworkStore } from '../../stores/networkStore'
 import { MessageStore } from '../../stores/messageStore'
@@ -38,11 +36,7 @@ class App extends React.Component<StoreProps> {
     }
   }
 
-  @observable private _thisRegion: string = ''
   render() {
-    const _regionObject: Message | null = this.props.messageStore ?
-                                          this.props.messageStore.getMessage(this._thisRegion) :
-                                          null
     return (
       <div className="App">
         <GoogleMap 
@@ -54,20 +48,17 @@ class App extends React.Component<StoreProps> {
           apiHandler={this._drawBox}
         />
         <Sidebar />
-        {_regionObject ?
-          <InfoCard data={_regionObject}/> : null 
-        } 
       </div>
     );
   }
 
-  @action
-  private _switchRegion(newRegion: string) {
-    this._thisRegion = newRegion
-  }
+  // @action
+  // private _switchRegion(newRegion: string) {
+  //   this._thisRegion = newRegion
+  // }
 
   private _drawBox = ((google: {map: any, maps: any }) => {
-    const self = this
+    // const self = this
     locations.forEach((location: any) => {
       const coords: Coords[] = [
         { lat: location.north, lng: location.east },
@@ -75,7 +66,8 @@ class App extends React.Component<StoreProps> {
         { lat: location.south, lng: location.west },
         { lat: location.north, lng: location.west },
       ]
-      let boundingBox = new google.maps.Polygon({
+      // let boundingBox = 
+      new google.maps.Polygon({
           map: google.map,
           paths: coords,
           strokeColor: '#FFFF',
@@ -89,9 +81,9 @@ class App extends React.Component<StoreProps> {
           boxID: location.ID
         })
 
-      google.maps.event.addListener(boundingBox, 'click', (event: google.maps.PolyMouseEvent) => {
-        self._switchRegion(boundingBox.boxID)
-      })
+      // google.maps.event.addListener(boundingBox, 'click', (event: google.maps.PolyMouseEvent) => {
+      //   self._switchRegion(boundingBox.boxID)
+      // })
     })
   }).bind(this)
 
