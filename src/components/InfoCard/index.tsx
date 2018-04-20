@@ -7,12 +7,13 @@ import './index.css'
 
 interface InfoCardProps {
     data: Message
+    onClick?: () => void
     expanded?: boolean
 }
 
 const InfoCard: React.SFC<InfoCardProps> = (props) => {
     return (
-        <div className="info-card">
+        <div className="info-card" onClick={props.onClick}>
             <div className="weather">
                 <WeatherIcon icon={props.data.weather.weather[0].icon} />
             </div>
