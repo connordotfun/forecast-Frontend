@@ -9,8 +9,7 @@ import { NetworkStore } from '../../stores/networkStore'
 import { MessageStore } from '../../stores/messageStore'
 
 import './index.css';
-
-const locations = require('./locations.json')
+import Message from '../../models/Message';
 
 interface StoreProps {
   networkStore?: NetworkStore,
@@ -39,6 +38,31 @@ class App extends React.Component<StoreProps> {
   }
 
   render() {
+    if (this._$google && this.props.messageStore) {
+      this.props.messageStore.$latestMessages.forEach((message: Message) => {
+        const coords: Coords[] = [
+          { lat: message.region.north, lng: message.region.east },
+          { lat: message.region.south, lng: message.region.east },
+          { lat: message.region.south, lng: message.region.west },
+          { lat: message.region.north, lng: message.region.west },
+        ]
+  
+        // let boundingBox = 
+        new google.maps.Polygon({
+            map: this._$google.map,
+            paths: coords,
+            strokeColor: '#FFFF',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#0000FF',
+            fillOpacity: 0.0,
+            draggable: false,
+            editable: false,
+            geodesic: false
+          })
+        })
+    }
+
     return (
       <div className="App">
         <GoogleMap 
@@ -61,33 +85,6 @@ class App extends React.Component<StoreProps> {
   @action
   private _onMapsLoad = ((loadedGoogle: {map: google.maps.Map, maps: any}) => {
     this._$google = loadedGoogle
-    // const self = this
-    locations.forEach((location: any) => {
-      const coords: Coords[] = [
-        { lat: location.north, lng: location.east },
-        { lat: location.south, lng: location.east },
-        { lat: location.south, lng: location.west },
-        { lat: location.north, lng: location.west },
-      ]
-
-      // let boundingBox = 
-      new google.maps.Polygon({
-          map: loadedGoogle.map,
-          paths: coords,
-          strokeColor: '#FFFF',
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: '#0000FF',
-          fillOpacity: 0.0,
-          draggable: false,
-          editable: false,
-          geodesic: false
-        })
-
-      // google.maps.event.addListener(boundingBox, 'click', (event: google.maps.PolyMouseEvent) => {
-      //   self._switchRegion(boundingBox.boxID)
-      // })
-    })
   }).bind(this)
 
 }
