@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Message from '../../models/Message';
-// import { Tweet } from 'react-twitter-widgets';
 import WeatherIcon from '../WeatherIcon'
+import SidebarTweet from '../SidebarTweet'
 
 import './index.css'
 
@@ -23,9 +23,11 @@ const InfoCard: React.SFC<InfoCardProps> = (props) => {
                         <p className="sentiment">Sentiment: {props.data.sentiment.toFixed(5)}</p>
                     </div>
                 </div>
-                {/* {props.expanded && 
-                    <Tweet tweetId={props.data.tid} />
-                } */}
+                {props.expanded && 
+                    <div className="expanded-info">
+                        <SidebarTweet tid={props.data.tid} />
+                    </div>
+                }
             </div>
         )
     }
