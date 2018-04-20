@@ -46,7 +46,7 @@ class Sidebar extends React.Component<SidebarProps> {
 
     private _zoomToRegion(region: Region) {
         this._$expandedCards.set(region.ID, !this._$expandedCards.get(region.ID))
-        if (this.props.google) {
+        if (this.props.google && this._$expandedCards.get(region.ID)) {
             this.props.google.map.setZoom(10)
             this.props.google.map.setCenter({lat: region.centerLat, lng: region.centerLon})
         }
