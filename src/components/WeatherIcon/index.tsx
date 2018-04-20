@@ -1,4 +1,3 @@
-// tslint:disable max-line-length
 import * as React from 'react'
 
 interface InfoCardProps {
@@ -27,7 +26,6 @@ const ICONS = {
 }
 
 const WeatherIcon: React.SFC<InfoCardProps> = (props) => {
-    console.log(props.icon) //tslint:disable-line
     return (
         <span className={`weather-icon climacon ${ICONS[props.icon]}`} aria-hidden="true" />
     )
