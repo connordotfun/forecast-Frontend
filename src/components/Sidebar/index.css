@@ -12,7 +12,6 @@
  
 .sidebar::-webkit-scrollbar-thumb {
   background-color: #158099;
-  outline: 1px solid slategrey;
 }
 
 .sidebar .branding {
