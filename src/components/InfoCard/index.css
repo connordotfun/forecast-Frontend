@@ -4,7 +4,8 @@
     grid-template-columns: 60px 1fr;
     grid-template-areas: "weather region";
     grid-column-gap: 5px;
-    padding: 15px;
+    padding: 0 15px;
+    margin: 15px 0;
     height: 100px;
 
     font-family: 'IBM-3270';
@@ -13,9 +14,13 @@
     cursor: pointer;
 }
 
-.info-card h3 {
-    margin: 10px 0;
+.info-card .region-name {
+    margin: 0;
     font-size: 25px;
+}
+
+.info-card .sentiment {
+    margin: 0;
 }
 
 .info-card .weather {
@@ -28,12 +33,13 @@
     font-size: 80px;
 }
 
-.info-card .region {
-    grid-area: "region";
+.weather .weather-icon::before {
+    vertical-align: middle;
 }
 
-/* .info-card .region-id {
-    grid-area: "bookmark";
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-} */
+.info-card .region {
+    grid-area: "region";
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
