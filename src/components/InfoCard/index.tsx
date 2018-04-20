@@ -1,28 +1,28 @@
 import * as React from 'react'
 import Message from '../../models/Message';
-import { Tweet } from 'react-twitter-widgets';
+// import { Tweet } from 'react-twitter-widgets';
+import WeatherIcon from '../WeatherIcon'
+
+import './index.css'
 
 interface InfoCardProps {
     data: Message
+    expanded?: boolean
 }
 
 const InfoCard: React.SFC<InfoCardProps> = (props) => {
-    const infoCardStyle: React.CSSProperties = {
-        position: 'fixed',
-        width: '300px',
-        height: '150px',
-        top: '10px',
-        right: '10px',
-        backgroundColor: 'white'
-    }
     return (
-        <div className="info-card" style={infoCardStyle}>
-            <h3>{props.data.region.name}</h3>
-            <ul>
-                <li>Weather: {props.data.weather.main.temp}° F with {props.data.weather.weather[0].description}</li>
-                <li>Sentiment: {props.data.sentiment}</li>
-            </ul>
-            <Tweet tweetId={props.data.tid} />
+        <div className="info-card">
+            <div className="weather">
+                <WeatherIcon icon={props.data.weather.weather[0].icon} />
+            </div>
+            <div className="region">
+                <h3>{props.data.region.name}</h3>
+                <p>Sentiment: {props.data.sentiment.toFixed(5)}</p>
+            </div>
+            {/* {props.expanded && 
+                <Tweet tweetId={props.data.tid} />
+            } */}
         </div>
     )
 }
