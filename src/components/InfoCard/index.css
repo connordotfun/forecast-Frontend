@@ -1,9 +1,5 @@
 .info-card {
     box-sizing: border-box;
-    display: grid;
-    grid-template-columns: 60px 1fr;
-    grid-template-areas: "weather region";
-    grid-column-gap: 5px;
     padding: 0 15px;
     margin: 15px 0;
     height: 100px;
@@ -12,6 +8,21 @@
     color: white;
     border: 2px solid white;
     cursor: pointer;
+
+    transition: height 0.3s;
+}
+
+.info-card.expanded {
+    height: 300px;
+}
+
+
+.info-card .basic-info {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    grid-template-areas: "weather region";
+    grid-column-gap: 5px;
+    height: 100px;
 }
 
 .info-card .region-name {

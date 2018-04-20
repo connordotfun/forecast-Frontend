@@ -12,20 +12,22 @@ interface InfoCardProps {
 }
 
 const InfoCard: React.SFC<InfoCardProps> = (props) => {
-    return (
-        <div className="info-card" onClick={props.onClick}>
-            <div className="weather">
-                <WeatherIcon icon={props.data.weather.weather[0].icon} />
+        return (
+            <div className={`info-card ${props.expanded ? 'expanded' : ''}`} onClick={props.onClick}>
+                <div className="basic-info">
+                    <div className="weather">
+                        <WeatherIcon icon={props.data.weather.weather[0].icon} />
+                    </div>
+                    <div className="region">
+                        <h3 className="region-name">{props.data.region.name}</h3>
+                        <p className="sentiment">Sentiment: {props.data.sentiment.toFixed(5)}</p>
+                    </div>
+                </div>
+                {/* {props.expanded && 
+                    <Tweet tweetId={props.data.tid} />
+                } */}
             </div>
-            <div className="region">
-                <h3 className="region-name">{props.data.region.name}</h3>
-                <p className="sentiment">Sentiment: {props.data.sentiment.toFixed(5)}</p>
-            </div>
-            {/* {props.expanded && 
-                <Tweet tweetId={props.data.tid} />
-            } */}
-        </div>
-    )
-}
+        )
+    }
 
 export default InfoCard
