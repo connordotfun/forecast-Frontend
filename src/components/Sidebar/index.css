@@ -6,6 +6,15 @@
     overflow-y: auto;
 }
 
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+ 
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #158099;
+  outline: 1px solid slategrey;
+}
+
 .sidebar .branding {
     box-sizing: border-box;
     max-width: 100%;
