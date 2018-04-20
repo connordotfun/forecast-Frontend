@@ -9,6 +9,7 @@ import networkStore from './stores/networkStore'
 import App from './views/App';
 
 import './index.css';
+import './climacons-font.css'
 
 const stores = {
   messageStore,
