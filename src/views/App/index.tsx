@@ -23,7 +23,7 @@ interface StoreProps {
 class App extends React.Component<StoreProps> {
 
   @observable private _$google: {map: google.maps.Map, maps: any}
-  private _allPolygons: google.maps.Polygon[] = []
+  private _allPolygons: Map<string, google.maps.Polygon> = new Map()
   
   @action
   componentWillMount() {
@@ -42,10 +42,6 @@ class App extends React.Component<StoreProps> {
 
   render() {
     if (this._$google && this.props.messageStore) {
-      this._allPolygons.forEach((polygon, index, arr) => {
-        polygon.setMap(null)
-      })
-      this._allPolygons = []
       this.props.messageStore.$latestMessages.forEach((message: Message) => {
         const coords: Coords[] = [
           { lat: message.region.north, lng: message.region.east },
@@ -66,15 +62,21 @@ class App extends React.Component<StoreProps> {
             editable: false,
             geodesic: false
           })
+        
+        let currentPolygon = this._allPolygons.get(message.region.ID)
 
-        this._allPolygons.push(polygon)
-        message.region.polygon = polygon
-        message.region.polygon.addListener('click', (event: google.maps.PolyMouseEvent) => {
+        if (currentPolygon) {
+          currentPolygon.setMap(null)
+        }
+
+        this._allPolygons.set(message.region.ID, polygon)
+
+        polygon.addListener('click', (event: google.maps.PolyMouseEvent) => {
           if (this.props.cardExpandedStore) {
             this.props.cardExpandedStore.toggleExpanded(message.region.ID)
           }
         })
-        })
+      })
     }
 
     return (
