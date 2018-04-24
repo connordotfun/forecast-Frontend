@@ -19,7 +19,7 @@ const InfoCard: React.SFC<InfoCardProps> = (props) => {
                         <WeatherIcon icon={props.data.weather.weather[0].icon} />
                     </div>
                     <div className="region">
-                        <h3 className="region-name">{props.data.region.name}</h3>
+                        <h3 className="region-name">{props.data.weather.name}</h3>
                         <p className="sentiment">Sentiment: {props.data.sentiment.toFixed(5)}</p>
                     </div>
                 </div>
