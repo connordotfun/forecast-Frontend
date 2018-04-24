@@ -12,6 +12,10 @@ export class CardExpandedStore {
     public getExpanded(id: string) {
         return this.$expandedCards.get(id)
     }
+
+    public setExpanded(id: string, expanded: boolean) {
+        this.$expandedCards.set(id, expanded)
+    }
 }
 
 export default new CardExpandedStore()
