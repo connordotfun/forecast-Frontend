@@ -6,8 +6,7 @@ interface Region {
     south: number,
     west: number,
     centerLat: number,
-    centerLon: number,
-    polygon?: google.maps.Polygon
+    centerLon: number
 }
 
 export default Region
