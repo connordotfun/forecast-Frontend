@@ -21,6 +21,7 @@ interface StoreProps {
 class App extends React.Component<StoreProps> {
 
   @observable private _$google: {map: google.maps.Map, maps: any}
+  private _allPolygons: google.maps.Polygon[] = []
   
   @action
   componentWillMount() {
@@ -39,6 +40,10 @@ class App extends React.Component<StoreProps> {
 
   render() {
     if (this._$google && this.props.messageStore) {
+      this._allPolygons.forEach((polygon, index, arr) => {
+        polygon.setMap(null)
+      })
+      this._allPolygons = []
       this.props.messageStore.$latestMessages.forEach((message: Message) => {
         const coords: Coords[] = [
           { lat: message.region.north, lng: message.region.east },
@@ -47,8 +52,7 @@ class App extends React.Component<StoreProps> {
           { lat: message.region.north, lng: message.region.west },
         ]
   
-        // let boundingBox = 
-        new google.maps.Polygon({
+        let polygon = new google.maps.Polygon({
             map: this._$google.map,
             paths: coords,
             strokeColor: '#FFFF',
@@ -60,6 +64,9 @@ class App extends React.Component<StoreProps> {
             editable: false,
             geodesic: false
           })
+
+        this._allPolygons.push(polygon)
+        message.region.polygon = polygon
         })
     }
 
@@ -77,10 +84,6 @@ class App extends React.Component<StoreProps> {
       </div>
     );
   }
-  // @action
-  // private _switchRegion(newRegion: string) {
-  //   this._thisRegion = newRegion
-  // }
 
   @action
   private _onMapsLoad = ((loadedGoogle: {map: google.maps.Map, maps: any}) => {
