@@ -13,7 +13,11 @@ interface InfoCardProps {
 
 const InfoCard: React.SFC<InfoCardProps> = (props) => {
         return (
-            <div className={`info-card ${props.expanded ? 'expanded' : ''}`} onClick={props.onClick}>
+            <div
+                className={`info-card ${props.expanded ? 'expanded' : ''}`}
+                id={`${props.data.region.ID}`}
+                onClick={props.onClick}
+            >
                 <div className="basic-info">
                     <div className="weather">
                         <WeatherIcon icon={props.data.weather.weather[0].icon} />
