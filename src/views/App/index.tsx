@@ -7,16 +7,18 @@ import GoogleMap from '../../components/GoogleMap'
 import Sidebar from '../../components/Sidebar'
 import { NetworkStore } from '../../stores/networkStore'
 import { MessageStore } from '../../stores/messageStore'
+import { CardExpandedStore } from '../../stores/cardExpandedStore'
 
 import './index.css';
 import Message from '../../models/Message';
 
 interface StoreProps {
   networkStore?: NetworkStore,
-  messageStore?: MessageStore
+  messageStore?: MessageStore,
+  cardExpandedStore?: CardExpandedStore
 } 
 
-@inject('networkStore', 'messageStore')
+@inject('networkStore', 'messageStore', 'cardExpandedStore')
 @observer
 class App extends React.Component<StoreProps> {
 
@@ -67,6 +69,11 @@ class App extends React.Component<StoreProps> {
 
         this._allPolygons.push(polygon)
         message.region.polygon = polygon
+        message.region.polygon.addListener('click', (event: google.maps.PolyMouseEvent) => {
+          if (this.props.cardExpandedStore) {
+            this.props.cardExpandedStore.toggleExpanded(message.region.ID)
+          }
+        })
         })
     }
 

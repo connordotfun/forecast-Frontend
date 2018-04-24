@@ -5,6 +5,7 @@ import { Provider } from 'mobx-react'
 
 import messageStore from './stores/messageStore'
 import networkStore from './stores/networkStore'
+import cardExpandedStore from './stores/cardExpandedStore'
 
 import App from './views/App';
 
@@ -13,7 +14,8 @@ import './climacons-font.css'
 
 const stores = {
   messageStore,
-  networkStore
+  networkStore,
+  cardExpandedStore
 }
 
 ReactDOM.render(
