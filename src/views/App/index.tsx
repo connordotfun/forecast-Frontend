@@ -73,7 +73,10 @@ class App extends React.Component<StoreProps> {
 
         polygon.addListener('click', (event: google.maps.PolyMouseEvent) => {
           if (this.props.cardExpandedStore) {
-            this.props.cardExpandedStore.toggleExpanded(message.region.ID)
+            this.props.cardExpandedStore.setExpanded(message.region.ID, true)
+            if (message.region.card) {
+              message.region.card.scrollIntoView({inline: 'center'})
+            }
           }
         })
       })

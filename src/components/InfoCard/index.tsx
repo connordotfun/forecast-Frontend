@@ -15,8 +15,8 @@ const InfoCard: React.SFC<InfoCardProps> = (props) => {
         return (
             <div
                 className={`info-card ${props.expanded ? 'expanded' : ''}`}
-                id={`${props.data.region.ID}`}
                 onClick={props.onClick}
+                ref={el => props.data.region.card = el}
             >
                 <div className="basic-info">
                     <div className="weather">

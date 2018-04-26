@@ -6,12 +6,12 @@ export class MessageStore {
 
     @action
     public addMessage(message: Message): void {
-        let prev = this.getMessage(message.ID)
-        if (prev) {
-            let sDiff = message.sentiment - prev.sentiment
-            let tDiff = message.weather.main.temp - prev.weather.main.temp
-            console.log(`${message.region.name} update: ΔS = ${sDiff}, ΔT = ${tDiff}`)
-        }
+        // let prev = this.getMessage(message.ID)
+        // if (prev) {
+            // let sDiff = message.sentiment - prev.sentiment
+            // let tDiff = message.weather.main.temp - prev.weather.main.temp
+            // console.log(`${message.region.name} update: ΔS = ${sDiff}, ΔT = ${tDiff}`)
+        // }
         this.$latestMessages.set(message.ID, message)
     }
 
