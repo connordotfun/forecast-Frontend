@@ -1,26 +1,29 @@
 import * as React from 'react';
-import GoogleMap from '../../components/GoogleMap'
-import InfoCard from '../../components/InfoCard'
 import { Coords } from 'google-map-react';
-import Message from '../../models/Message';
-import { observable, action } from 'mobx'
+import { action, observable } from 'mobx'
 import { observer, inject } from 'mobx-react'
 
+import GoogleMap from '../../components/GoogleMap'
+import Sidebar from '../../components/Sidebar'
 import { NetworkStore } from '../../stores/networkStore'
 import { MessageStore } from '../../stores/messageStore'
+import { CardExpandedStore } from '../../stores/cardExpandedStore'
 
 import './index.css';
-
-const locations = require('./locations.json')
+import Message from '../../models/Message';
 
 interface StoreProps {
   networkStore?: NetworkStore,
-  messageStore?: MessageStore
+  messageStore?: MessageStore,
+  cardExpandedStore?: CardExpandedStore
 } 
 
-@inject('networkStore', 'messageStore')
+@inject('networkStore', 'messageStore', 'cardExpandedStore')
 @observer
 class App extends React.Component<StoreProps> {
+
+  @observable private _$google: {map: google.maps.Map, maps: any}
+  private _allPolygons: Map<string, google.maps.Polygon> = new Map()
   
   @action
   componentWillMount() {
@@ -37,60 +40,63 @@ class App extends React.Component<StoreProps> {
     }
   }
 
-  @observable private _thisRegion: string = ''
   render() {
-    const _regionObject: Message | null = this.props.messageStore ?
-                                          this.props.messageStore.getMessage(this._thisRegion) :
-                                          null
+    if (this._$google && this.props.messageStore) {
+      this.props.messageStore.$latestMessages.forEach((message: Message) => {
+        const coords: Coords[] = [
+          { lat: message.region.north, lng: message.region.east },
+          { lat: message.region.south, lng: message.region.east },
+          { lat: message.region.south, lng: message.region.west },
+          { lat: message.region.north, lng: message.region.west },
+        ]
+  
+        let polygon = new google.maps.Polygon({
+            map: this._$google.map,
+            paths: coords,
+            strokeColor: '#FFFF',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#0000FF',
+            fillOpacity: 0.0,
+            draggable: false,
+            editable: false,
+            geodesic: false
+          })
+        
+        let currentPolygon = this._allPolygons.get(message.region.ID)
+
+        if (currentPolygon) {
+          currentPolygon.setMap(null)
+        }
+
+        this._allPolygons.set(message.region.ID, polygon)
+
+        polygon.addListener('click', (event: google.maps.PolyMouseEvent) => {
+          if (this.props.cardExpandedStore) {
+            this.props.cardExpandedStore.toggleExpanded(message.region.ID)
+          }
+        })
+      })
+    }
+
     return (
       <div className="App">
         <GoogleMap 
-          initialZoom={5}
-          initialCenter={{
+          zoom={5}
+          center={{
             lat: 40.015, 
             lng: -105.2705,
           }}
-          apiHandler={this._drawBox}
+          apiHandler={this._onMapsLoad}
         />
-        {_regionObject ?
-          <InfoCard data={_regionObject}/> : null 
-        } 
+        <Sidebar google={this._$google}/>
       </div>
     );
   }
 
   @action
-  private _switchRegion(newRegion: string) {
-    this._thisRegion = newRegion
-  }
-
-  private _drawBox = ((google: {map: any, maps: any }) => {
-    const self = this
-    locations.forEach((location: any) => {
-      const coords: Coords[] = [
-        { lat: location.north, lng: location.east },
-        { lat: location.south, lng: location.east },
-        { lat: location.south, lng: location.west },
-        { lat: location.north, lng: location.west },
-      ]
-      let boundingBox = new google.maps.Polygon({
-          map: google.map,
-          paths: coords,
-          strokeColor: '#FFFF',
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: '#0000FF',
-          fillOpacity: 0.0,
-          draggable: false,
-          editable: false,
-          geodesic: false,
-          boxID: location.ID
-        })
-
-      google.maps.event.addListener(boundingBox, 'click', (event: google.maps.PolyMouseEvent) => {
-        self._switchRegion(boundingBox.boxID)
-      })
-    })
+  private _onMapsLoad = ((loadedGoogle: {map: google.maps.Map, maps: any}) => {
+    this._$google = loadedGoogle
   }).bind(this)
 
 }
