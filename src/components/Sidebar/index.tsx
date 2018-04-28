@@ -9,6 +9,7 @@ import './index.css'
 import logo from '../../assets/logo.png'
 import Region from '../../models/Region'
 import { autorun, observable } from 'mobx';
+import { sortMapBySentiment } from '../../utils/sorting';
 
 interface SidebarProps {
     messageStore?: MessageStore
@@ -24,7 +25,7 @@ class Sidebar extends React.Component<SidebarProps> {
         autorun(() => {
             if (this.props.messageStore) {
                 this._$cards = []
-                this.props.messageStore.$latestMessages.forEach(
+                sortMapBySentiment(this.props.messageStore.$latestMessages).forEach(
                     (region, id) => {
                         this._$cards.push(
                             <InfoCard
@@ -40,7 +41,7 @@ class Sidebar extends React.Component<SidebarProps> {
         },      {delay: 300})
     }
 
-    render() {
+render() {
         return(
             <div className="sidebar">
                 <img src={logo} alt="FORECAST" className="branding"/>
