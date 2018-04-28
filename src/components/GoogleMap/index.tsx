@@ -54,8 +54,8 @@ class GoogleMap extends React.Component<MapProps> {
                             strokeColor: '#FFFF',
                             strokeOpacity: 0.8,
                             strokeWeight: 2,
-                            fillColor: '#FFFF',
-                            fillOpacity: 0,
+                            fillColor: sentimentHex(message.sentiment),
+                            fillOpacity: 0.5,
                             draggable: false,
                             editable: false,
                             geodesic: false
