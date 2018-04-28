@@ -47,12 +47,21 @@ class GoogleMap extends React.Component<MapProps> {
                             { lat: message.region.south, lng: message.region.west },
                             { lat: message.region.north, lng: message.region.west },
                         ]
+
+                        let borderStroke = 0
+                        
+                        if (
+                            this.props.cardExpandedStore
+                            &&
+                            this.props.cardExpandedStore.getExpanded(message.region.ID)) {
+                            borderStroke = 1 // Display border if card expanded
+                        }
                     
                         let polygon = new google.maps.Polygon({
                             map: this._$google.map,
                             paths: coords,
                             strokeColor: '#FFFF',
-                            strokeOpacity: 0.8,
+                            strokeOpacity: borderStroke,
                             strokeWeight: 2,
                             fillColor: sentimentHex(message.sentiment),
                             fillOpacity: 0.5,
