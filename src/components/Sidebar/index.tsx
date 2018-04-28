@@ -55,7 +55,7 @@ class Sidebar extends React.Component<SidebarProps> {
         if (this.props.cardExpandedStore) {
             this.props.cardExpandedStore.toggleExpanded(region.ID)
             if (this.props.google && this.props.cardExpandedStore.getExpanded(region.ID)) {
-                this.props.google.map.setZoom(6)
+                this.props.google.map.setZoom(8)
                 this.props.google.map.panTo({lat: region.centerLat, lng: region.centerLon})
             }
         }
