@@ -8,6 +8,7 @@ import InfoCard from '../../components/InfoCard'
 import './index.css'
 import logo from '../../assets/logo.png'
 import Region from '../../models/Region'
+import { autorun, observable } from 'mobx';
 
 interface SidebarProps {
     messageStore?: MessageStore
@@ -18,12 +19,14 @@ interface SidebarProps {
 @inject('messageStore', 'cardExpandedStore')
 @observer
 class Sidebar extends React.Component<SidebarProps> {
-    render() {
-        let cards: React.ReactNode[] = []
-        if (this.props.messageStore) {
+    @observable private _$cards: React.ReactNode[]
+    componentWillMount() {
+        autorun(() => {
+            if (this.props.messageStore) {
+                this._$cards = []
                 this.props.messageStore.$latestMessages.forEach(
-                    (region, id) => (
-                        cards.push(
+                    (region, id) => {
+                        this._$cards.push(
                             <InfoCard
                                 key={id}
                                 data={region}
@@ -31,14 +34,18 @@ class Sidebar extends React.Component<SidebarProps> {
                                 expanded={this.props.cardExpandedStore && this.props.cardExpandedStore.getExpanded(id)}
                             />
                         )
-                    )
+                    }
                 )
-        }
+            }
+        },      {delay: 300})
+    }
+
+    render() {
         return(
             <div className="sidebar">
                 <img src={logo} alt="FORECAST" className="branding"/>
                 <div className="region-cards">
-                    {cards}
+                    {this._$cards}
                 </div>
             </div>
         )
@@ -48,8 +55,8 @@ class Sidebar extends React.Component<SidebarProps> {
         if (this.props.cardExpandedStore) {
             this.props.cardExpandedStore.toggleExpanded(region.ID)
             if (this.props.google && this.props.cardExpandedStore.getExpanded(region.ID)) {
-                this.props.google.map.setZoom(10)
-                this.props.google.map.setCenter({lat: region.centerLat, lng: region.centerLon})
+                this.props.google.map.setZoom(6)
+                this.props.google.map.panTo({lat: region.centerLat, lng: region.centerLon})
             }
         }
     }
