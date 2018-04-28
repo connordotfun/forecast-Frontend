@@ -4,7 +4,7 @@ import { inject } from 'mobx-react';
 import { MessageStore } from '../../stores/messageStore';
 import { CardExpandedStore } from '../../stores/cardExpandedStore';
 import Message from '../../models/Message';
-import sentimentHex from '../../utils/colors';
+import { sentimentHex } from '../../utils/colors';
 import { autorun, observable } from 'mobx';
 
 const CleanerMidnight = require('./CleanerMidnight.json')

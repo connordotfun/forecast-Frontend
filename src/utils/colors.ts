@@ -5,9 +5,7 @@ const COLORS = [
     '#2ca58d'
 ]
 
-const sentimentHex = (value: number) => {
+export const sentimentHex = (value: number) => {
     const gradient = scale(COLORS).mode('rgb')
     return gradient((value + 1) / 2).hex()
 }
-
-export default sentimentHex
