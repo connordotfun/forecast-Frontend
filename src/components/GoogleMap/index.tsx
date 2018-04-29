@@ -85,11 +85,11 @@ class GoogleMap extends React.Component<MapProps> {
                                 if (message.region.card) {
                                     message.region.card.scrollIntoView({inline: 'center'})
                                 }
-                                this._$google.map.setZoom(8)
-                                this._$google.map.panTo({
-                                    lat: message.region.centerLat,
-                                    lng: message.region.centerLon
-                                })
+                                // this._$google.map.setZoom(8)
+                                // this._$google.map.panTo({
+                                //     lat: message.region.centerLat,
+                                //     lng: message.region.centerLon
+                                // })
                             }
                         })
                 })
