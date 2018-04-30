@@ -38,7 +38,7 @@ class Sidebar extends React.Component<SidebarProps> {
                     }
                 )
             }
-        },      {delay: 1000})
+        },      {delay: 500})
     }
 
 render() {
