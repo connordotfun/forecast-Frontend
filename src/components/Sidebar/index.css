@@ -1,0 +1,25 @@
+.sidebar {
+    box-sizing: border-box;
+    grid-area: sidebar;
+    background-color: #021019;
+    border-right: 2px solid #158099;
+    overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+ 
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #158099;
+}
+
+.sidebar .branding {
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: 5px;
+}
+
+.sidebar .region-cards {
+    padding: 5px;
+}

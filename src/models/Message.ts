@@ -5,7 +5,7 @@ interface Message {
     ID: string,
     region: Region,
     sentiment: number,
-    tid: string,
+    tid: string[],
     weather: Data
 }
 

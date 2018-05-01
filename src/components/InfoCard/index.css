@@ -1,0 +1,56 @@
+.info-card {
+    box-sizing: border-box;
+    padding: 0 15px;
+    margin: 15px 0;
+    height: 100px;
+
+    font-family: 'IBM-3270';
+    color: white;
+    border: 2px solid white;
+    cursor: pointer;
+
+    transition: height 0.3s;
+}
+
+.info-card.expanded {
+    height: auto;
+}
+
+
+.info-card .basic-info {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    grid-template-areas: "weather region";
+    grid-column-gap: 5px;
+    height: 100px;
+}
+
+.info-card .region-name {
+    margin: 0;
+    font-size: 25px;
+}
+
+.info-card .sentiment {
+    margin: 0;
+}
+
+.info-card .weather {
+    grid-area: "weather";
+    position: relative;
+}
+
+.weather .weather-icon {
+    color: white;
+    font-size: 80px;
+}
+
+.weather .weather-icon::before {
+    vertical-align: middle;
+}
+
+.info-card .region {
+    grid-area: "region";
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

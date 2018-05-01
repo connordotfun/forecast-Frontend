@@ -6,7 +6,8 @@ interface Region {
     south: number,
     west: number,
     centerLat: number,
-    centerLon: number
+    centerLon: number,
+    card?: HTMLDivElement | null
 }
 
 export default Region
