@@ -4,7 +4,7 @@ import { inject } from 'mobx-react';
 import { MessageStore } from '../../stores/messageStore';
 import { CardExpandedStore } from '../../stores/cardExpandedStore';
 import Message from '../../models/Message';
-import sentimentHex from '../../utils/colors';
+import { sentimentHex } from '../../utils/colors';
 import { autorun, observable } from 'mobx';
 
 const CleanerMidnight = require('./CleanerMidnight.json')
@@ -47,15 +47,24 @@ class GoogleMap extends React.Component<MapProps> {
                             { lat: message.region.south, lng: message.region.west },
                             { lat: message.region.north, lng: message.region.west },
                         ]
+
+                        let borderStroke = 0
+                        
+                        if (
+                            this.props.cardExpandedStore
+                            &&
+                            this.props.cardExpandedStore.getExpanded(message.region.ID)) {
+                            borderStroke = 1 // Display border if card expanded
+                        }
                     
                         let polygon = new google.maps.Polygon({
                             map: this._$google.map,
                             paths: coords,
                             strokeColor: '#FFFF',
-                            strokeOpacity: 0.8,
+                            strokeOpacity: borderStroke,
                             strokeWeight: 2,
-                            fillColor: '#FFFF',
-                            fillOpacity: 0,
+                            fillColor: sentimentHex(message.sentiment),
+                            fillOpacity: 0.5,
                             draggable: false,
                             editable: false,
                             geodesic: false
@@ -76,11 +85,11 @@ class GoogleMap extends React.Component<MapProps> {
                                 if (message.region.card) {
                                     message.region.card.scrollIntoView({inline: 'center'})
                                 }
-                                this._$google.map.setZoom(8)
-                                this._$google.map.panTo({
-                                    lat: message.region.centerLat,
-                                    lng: message.region.centerLon
-                                })
+                                // this._$google.map.setZoom(8)
+                                // this._$google.map.panTo({
+                                //     lat: message.region.centerLat,
+                                //     lng: message.region.centerLon
+                                // })
                             }
                         })
                 })

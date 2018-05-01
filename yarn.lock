@@ -20,6 +20,10 @@
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@mapbox/point-geometry/-/point-geometry-0.1.0.tgz#8a83f9335c7860effa2eeeca254332aa0aeed8f2"
 
+"@types/chroma-js@^1.3.4":
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/@types/chroma-js/-/chroma-js-1.3.4.tgz#ef6d73041992544f492c5baad96468791ec45af5"
+
 "@types/google-map-react@^0.23.2":
   version "0.23.3"
   resolved "https://registry.yarnpkg.com/@types/google-map-react/-/google-map-react-0.23.3.tgz#8c5f4557c58554aa7b7ec0027437b239947ceae2"
@@ -1423,6 +1427,10 @@ chokidar@^2.0.2:
 chownr@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.0.1.tgz#e2a75042a9551908bebd25b8523d5f9769d79181"
+
+chroma-js@^1.3.6:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/chroma-js/-/chroma-js-1.3.6.tgz#22dd7220ef6b55dcfcb8ef92982baaf55dced45d"
 
 ci-info@^1.0.0:
   version "1.1.3"
